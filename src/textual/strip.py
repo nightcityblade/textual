@@ -603,22 +603,27 @@ class Strip:
         self._divide_cache[cache_key] = strips
         return strips
 
-    def apply_style(self, style: Style) -> Strip:
+    def apply_style(
+        self, style: Style, post_style: Style | None = None
+    ) -> Strip:
         """Apply a style to the Strip.
 
         Args:
             style: A Rich style.
+            post_style: A Rich style to apply after the segments' own style.
 
         Returns:
             A new strip.
         """
-        cached = self._style_cache.get(style)
+        cache_key = (style, post_style)
+        cached = self._style_cache.get(cache_key)
         if cached is not None:
             return cached
         styled_strip = Strip(
-            Segment.apply_style(self._segments, style), self.cell_length
+            Segment.apply_style(self._segments, style, post_style=post_style),
+            self.cell_length,
         )
-        self._style_cache[style] = styled_strip
+        self._style_cache[cache_key] = styled_strip
         return styled_strip
 
     def apply_meta(self, meta: dict[str, Any]) -> Strip:
