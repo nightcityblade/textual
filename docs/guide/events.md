@@ -310,7 +310,7 @@ If your event handlers are coroutines it will allow multiple events to be proces
 
     To re-use the chef analogy, if an order comes in for beef wellington (which takes a while to cook), orders may start to pile up and customers may have to wait for their meal. The solution would be to have another chef work on the wellington while the first chef picks up new orders.
 
-Network access is a common cause of slow handlers. If you try to retrieve a file from the internet, the message handler may take anything up to a few seconds to return, which would prevent the widget or app from updating during that time. The solution is to launch a new asyncio task to do the network task in the background.
+Network access is a common cause of slow handlers. If you try to retrieve a file from the internet, the message handler may take anything up to a few seconds to return, which would prevent the widget or app from updating during that time. The solution is to run the network task in a [worker](./workers.md).
 
 Let's look at an example which looks up word definitions from an [api](https://dictionaryapi.dev/) as you type.
 
@@ -320,7 +320,7 @@ Let's look at an example which looks up word definitions from an [api](https://d
 
 === "dictionary.py"
 
-    ```python title="dictionary.py" hl_lines="28"
+    ```python title="dictionary.py" hl_lines="27 32"
     --8<-- "docs/examples/events/dictionary.py"
     ```
 === "dictionary.tcss"

@@ -1,5 +1,3 @@
-import asyncio
-
 try:
     import httpx
 except ImportError:
@@ -7,6 +5,7 @@ except ImportError:
 
 from rich.json import JSON
 
+from textual import work
 from textual.app import App, ComposeResult
 from textual.containers import VerticalScroll
 from textual.widgets import Input, Static
@@ -25,11 +24,12 @@ class DictionaryApp(App):
         """A coroutine to handle a text changed message."""
         if message.value:
             # Look up the word in the background
-            asyncio.create_task(self.lookup_word(message.value))
+            self.lookup_word(message.value)
         else:
             # Clear the results
             self.query_one("#results", Static).update()
 
+    @work(exclusive=True)
     async def lookup_word(self, word: str) -> None:
         """Looks up a word."""
         url = f"https://api.dictionaryapi.dev/api/v2/entries/en/{word}"
