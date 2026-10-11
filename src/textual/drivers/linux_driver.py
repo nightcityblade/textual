@@ -182,6 +182,8 @@ class LinuxDriver(Driver):
         write("\x1b[?1003l")  #
         write("\x1b[?1015l")
         write("\x1b[?1006l")
+        if self._mouse_pixels:
+            write("\x1b[?1016l")
         self.flush()
 
     def write(self, data: str) -> None:
